@@ -1,7 +1,9 @@
 
 from django.urls import path
-from .base import Base
+from .base import Index
+from .views import Login
 
 urlpatterns = [
-    path('base/', Base.as_view()),
+    path('index/', Index.as_view(), name='dashboard_index'),
+    path('login/', Login.as_view(), name='dashboard_login'),
 ]

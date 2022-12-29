@@ -6,8 +6,9 @@ from django.http import HttpResponse
 
 
 def render_to_resoponse(request, template,data=None):
-    #
+    #context实例
     context_instance = RequestContext(request)
+    #获取模板路径
     path = settings.TEMPLATES[0]['DIRS'][0]
     lookup = TemplateLookup(
         directories=[path],
@@ -19,6 +20,7 @@ def render_to_resoponse(request, template,data=None):
     if not data:
         data = {}
 
+    #如果上下文实例存在则更新data，如果不存在则创建
     if context_instance:
         context_instance.update(data)
     else:
@@ -28,5 +30,6 @@ def render_to_resoponse(request, template,data=None):
     for d in context_instance:
         result.update(d)
 
-    result['csrf_token'] = '<input type="hidden" name="csrfmiddlewaretoken", value="{}" />'.format(request.META.get('CSRF_COOKIE',''))
+    #设置csrf_token
+    result['csrf_token'] = '<input type="hidden" name="csrfmiddlewaretoken", value="{}" />'.format(request.META.get('CSRF_COOKIE'))
     return HttpResponse(mako_template.render(**result))
