@@ -3,7 +3,7 @@ from django.views.generic import View
 from libs.base_rander import render_to_resoponse
 from django.contrib.auth import authenticate
 from .models import Video, VideoSub, VideoStar, VideoType, FromType, NationalityType, IdentityType
-from utils.common import chekcAndGetVideoType
+from utils.common import chekcAndGetVideoType, handle_video
 
 # Create your views here.
 # 外链视频视图
@@ -109,17 +109,25 @@ class VideoSubView(View):
     def post(self, request, video_id):
         number = request.POST.get('number', '')
         videosub_id = request.POST.get('videosub_id', '')
+        video = Video.objects.get(pk=video_id)
 
         #判断当前视频是否为自制视频，自制视频这里是file 不是url
-        url = request.POST.get('url', '')
+        if FromType(video.from_to) == FromType.custom:
+            url = request.FILES.get('url', '')
+        else:
+            url = request.POST.get('url', '')
 
-
-        #url format
+        #页面路径格式化
         url_format = reverse('video_sub', kwargs={'video_id': video_id})
         if not all([url,number]):
             return redirect('{}error={}'.format(url_format,'缺少必要信息'))
-        # 获取视频信息 再去做更新 编辑
-        video = Video.objects.get(pk=video_id)
+        #如果当前视频为自制视频则触发handle_video函数进行拷贝
+        if FromType(video.from_to) == FromType.custom:
+            handle_video(url, video_id, number)
+            return redirect(reverse('video_sub', kwargs={'video_id': video_id}))
+
+        # # 获取视频信息 再去做更新 编辑
+        # video = Video.objects.get(pk=video_id)
         #判断当前是否由videosub_id ->yes update ; no create
         if not videosub_id:
             try:

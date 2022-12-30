@@ -153,3 +153,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
 ]
+
+#七牛云配置
+QINIU_AK = ""
+QINIU_SK = ""
+QINIU_VIDEO = "qingdeng-video"
+QINIU_VIDEO_URL = ""

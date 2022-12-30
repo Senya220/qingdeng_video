@@ -19,3 +19,32 @@
     <input type="hidden" name="video_id" value="${video.id}" />
     <input type="submit" name="name"  value="添加" class="btn btn-info" id="add-star-btn" />
 </form>
+
+%if FromType(video.from_to) == FromType.custom:
+<form action="${reverse('video_sub', kwargs={'video_id': video.id})}" enctype="multipart/form-data" class="form-horizontal edit-area add-video-area add-url" method="post"></form>
+    ${csrf_token}
+%else:
+<form action="${reverse('video_sub', kwargs={'video_id': video.id})}" enctype="multipart/form-data" class="form-horizontal edit-area add-video-area add-url" method="post">
+    ${csrf_token}
+%endif
+    <p>地址与选集添加区域</p>
+    %if FromType(video.from_to) != FromType.custom:
+        <label>添加地址：</label> <input id="url" type="text" name="url" class="form-control" />
+    %else:
+        <label>添加地址：</label> <input id="url" type="file" name="url" class="form-control" />
+    %endif
+    <label>添加集数:</label><input id="number" type="number" name="number" class="form-control" /> <br>
+    <input type="hidden" value="" name="videosub_id" id="videosub_input-id">
+    <input type="submit" value="添加" class="btn btn-info" id="add-url-btn">
+</form>
+
+<h2>集数</h2>
+<table class="table">
+    <thead>
+        <tr>
+
+        </tr>
+    </thead>
+
+
+</table>
