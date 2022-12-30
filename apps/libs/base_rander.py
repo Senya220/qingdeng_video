@@ -5,9 +5,12 @@ from django.template.context import Context
 from django.http import HttpResponse
 
 
-def render_to_resoponse(request, template,data=None):
+def render_to_resoponse(request, template, data=None):
     #context实例
+    #context_instance: [{'True': True, 'False': False, 'None': None}, {}, {}]
     context_instance = RequestContext(request)
+    print('context_instance11111:{}'.format(context_instance))
+
     #获取模板路径
     path = settings.TEMPLATES[0]['DIRS'][0]
     lookup = TemplateLookup(
@@ -25,6 +28,8 @@ def render_to_resoponse(request, template,data=None):
         context_instance.update(data)
     else:
         context_instance = Context(data)
+    #context_instance: [{'True': True, 'False': False, 'None': None}, {}, {}]
+
 
     result = {}
     for d in context_instance:
@@ -32,4 +37,6 @@ def render_to_resoponse(request, template,data=None):
 
     #设置csrf_token
     result['csrf_token'] = '<input type="hidden" name="csrfmiddlewaretoken", value="{}" />'.format(request.META.get('CSRF_COOKIE'))
+    #result:{'error': '', 'True': True, 'False': False, 'None': None,'csrf_token': '<input type="hidden" name="csrfmiddlewaretoken", value="None" />'}
     return HttpResponse(mako_template.render(**result))
+

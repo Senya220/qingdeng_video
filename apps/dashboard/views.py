@@ -55,12 +55,12 @@ class Login(View):
             return render_to_resoponse(request, 'dashboard/auth/login.html', data=data)
 
         login(request, user)
-        # 跳转到新路径，再由服务端匹配这个路由进入视图函数，再返回这个页面
-        # 奇怪的问题？ ： 路径跳转了，但还是显示登录页面
-        return redirect(reverse('dashboard_index'))
+        # # 跳转到新路径，再由服务端匹配这个路由进入视图函数，再返回这个页面
+        # # 奇怪的问题？ ： 路径跳转了，但还是显示登录页面
+        # return redirect(reverse('dashboard_index'))
 
-        # # #路径不变 页面刷新到指定页面
-        # return render_to_resoponse(request, 'dashboard/index.html', data=data)
+        # #路径不变 页面刷新到指定页面
+        return render_to_resoponse(request, 'dashboard/index.html', data=data)
 
 class LogoutUser(View):
     def get(self, request):

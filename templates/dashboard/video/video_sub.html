@@ -1,0 +1,21 @@
+<%inherit file="../base.html" />
+<%!
+    from django.shortcuts import reverse
+    from client.models import IdentityType
+%>
+<%def name="content()">
+
+<h1>${video.name} <span>${error}</span></h1>
+<form action="${reverse('video_star')}"  class="form-horizontal edit-area add-video-area add-url" method="post">
+    ${csrf_token}
+    <p>演员与身份编辑区域</p>
+    <label>演员: </label> <input type="text" name="name" class="form-control" /> <br>
+    <label>身份: </label>
+    <select name="identity" class="form-control">
+        %for identity in IdentityType:
+            <option value="${identity.value}">${identity.label} </option>
+        %endfor
+    </select>
+    <input type="hidden" name="video_id" value="${video.id}" />
+    <input type="submit" name="name"  value="添加" class="btn btn-info" id="add-star-btn" />
+</form>

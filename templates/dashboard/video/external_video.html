@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>External_video</title>
-</head>
-<body>
-
-</body>
-</html>
+<%inherit file="../base.html" />
+<%! from django.shortcuts import reverse %>
+<%def name="content()">
+<%
+    from client.models import VideoType, FromType, NationalityType
+%>
+    <h1>视频管理</h1>
+    <button id="open-add-video-btn" class="btn btn-info open-btn">创建</button> <span>${error}</span>
+    <form id="video-edit-area" action="${reverse('external_video')}"  class="form-horizontal edit-area add-video-area add-url" method="post">
+        ${csrf_token}
+        <div class="from-group">
+            <div class="col-sm-10">
+                <input type="text" name="name" class="form-control" placeholder="视频名称">
+            </div>
+        </div>
+        <div class="from-group">
+            <div class="col-sm-10">
+                <input type="text" name="image" class="form-control" placeholder="海报">
+            </div>
+        </div>
+        <div class="from-group">
+            <div class="col-sm-10">
+                <label>视频类型</label>
+                <select name="video_type" class="form-control video-select">
+                    %for video_type in VideoType:
+                        <option value="${video_type.value}">${video_type.label} </option>
+                    %endfor
+                </select>
+            </div>
+        </div>
+        <div class="from-group">
+            <div class="col-sm-10">
+                <label>视频来源</label>
+                <select name="from_to" class="form-control video-select">
+                    %for from_to in FromType:
+                        <option value="${from_to.value}">${from_to.label} </option>
+                    %endfor
+                </select>
+            </div>
+        </div>
+        <div class="from-group">
+            <div class="col-sm-10">
+                <label>视频地区来源</label>
+                <select name="nationality" class="form-control video-select">
+                    %for nationality in NationalityType:
+                        <option value="${nationality.value}">${nationality.label} </option>
+                    %endfor
+                </select>
+            </div>
+        </div>
+    </form>
