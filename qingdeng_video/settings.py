@@ -91,6 +91,26 @@ DATABASES = {
     }
 }
 
+#EMAIL config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#每个邮箱由不同的服务器  163：smtp.163.com qq:smtp.qq.com
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+#发送邮件的邮箱 ->发送源
+EMAIL_HOST_USER = 'selina202212@163.com'
+#在邮箱中设置授权码
+EMAIL_HOST_PASSWORD = "Test@20220812"
+#此邮箱和上面的发送源邮箱相同
+EMAIL_FROM = 'selina202212@163.com'
+DEFAULT_FROM_EMAIL = "selina202212@163.com"
+
+
+
+
+
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

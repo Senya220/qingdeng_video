@@ -2,7 +2,7 @@ from django.shortcuts import redirect, reverse
 from django.views.generic import View
 from libs.base_rander import render_to_resoponse
 from django.contrib.auth import authenticate
-from .models import Video, VideoStub, VideoStar, VideoType, FromType, NationalityType, IdentityType
+from .models import Video, VideoSub, VideoStar, VideoType, FromType, NationalityType, IdentityType
 from utils.common import chekcAndGetVideoType
 
 # Create your views here.
@@ -65,13 +65,32 @@ class VideoSubView(View):
             data['video'] = video
             return render_to_resoponse(request, 'dashboard/video/video_stub.html', data=data)
 
+    # def post(self, request, video_id):
+    #     url = request.POST.get('url', '')
+    #     video = Video.objects.get(pk=video_id)
+    #     number = video.video_stub.count() + 1
+    #     VideoSub.objects.create(video=video, url=url, number=number)
+    #     return redirect(reverse('video_stub',kwargs={'video_id': video_id}))
+
     def post(self, request, video_id):
         url = request.POST.get('url', '')
-        video = Video.objects.get(pk=video_id)
-        number = video.video_stub.count() + 1
-        VideoStub.objects.create(video=video, url=url, number=number)
-        return redirect(reverse('video_stub',kwargs={'video_id': video_id}))
+        number = request.POST.get('number', '')
+        videosub_id = request.POST.get('videosub_id', '')
 
+        #url format
+        url_format = reverse('video_sub', kwargs={'video_id': video_id})
+        if not all([url,number]):
+            return redirect('{}error={}'.format(url_format,'缺少必要信息'))
+        # 获取视频信息 再去做更新 编辑
+        video = Video.objects.get(pk=video_id)
+        #判断当前是否由videosub_id ->yes update ; no create
+        if not videosub_id:
+            try:
+                Video.objects.create(video=video, url=url, number=number)
+            except:
+                return redirect('{}error={}'.format(url_format, '创建失败'))
+
+        return redirect(reverse('video_sub', kwargs={'video_id': video_id}))
 
 class VideoStartView(View):
     def post(self, request):
@@ -80,7 +99,7 @@ class VideoStartView(View):
         video_id = request.POST.get('video_id', '')
 
         #
-        path_format = '{}'.format(reverse('video_stub', kwargs={'video_id': video_id}))
+        path_format = '{}'.format(reverse('video_sub', kwargs={'video_id': video_id}))
 
         #
         if not all(['name','identity','video_id']):
@@ -100,9 +119,14 @@ class VideoStartView(View):
             )
         except:
             return redirect('{}?error={}'.format(path_format, '创建失败'))
-        return redirect(reverse('video_sub'), kwargs={'video_id': video_id})
+        return redirect(reverse('video_sub', kwargs={'video_id': video_id}))
 
 class StarDelete(View):
     def get(self, request, star_id, video_id):
         Video.objects.filter(id=star_id).delete()
+        return redirect(reverse('video_sub'), kwargs={'video_id': video_id})
+
+class SubDelete(View):
+    def get(self, request,videosub_id, video_id):
+        Video.objects.filter(id=videosub_id).delete()
         return redirect(reverse('video_sub'), kwargs={'video_id': video_id})
