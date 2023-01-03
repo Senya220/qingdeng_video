@@ -12,10 +12,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os, sys
 
+#config celery
+import djcelery
+djcelery.setup_loader()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # config apps directory path
-sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -40,7 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'client',
     'dashboard',
+    'djcelery',
 ]
+
+#config redis db ->第2号数据库
+BROKER_URL = 'redis://localhost:6379/2'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/3'
+#config task.py path
+CELERY_IMPORTS = ('tasks.task')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,10 +119,6 @@ DEFAULT_FROM_EMAIL = "selina202212@163.com"
 
 
 
-
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -155,7 +162,7 @@ STATICFILES_DIRS = [
 ]
 
 #七牛云配置
-QINIU_AK = ""
-QINIU_SK = ""
+QINIU_AK = "xx"
+QINIU_SK = "xx"
 QINIU_VIDEO = "qingdeng-video"
-QINIU_VIDEO_URL = ""
+QINIU_VIDEO_URL = "xx"

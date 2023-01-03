@@ -8,8 +8,8 @@ class VideoType(Enum):
     meiti = 'meiti'
     other = 'other'
 
-VideoType.meiti.label = 'meiti'
-VideoType.other.label = 'other'
+VideoType.meiti.label = '欧美'
+VideoType.other.label = '韩国'
 
 class FromType(Enum):
     youku = 'youku'

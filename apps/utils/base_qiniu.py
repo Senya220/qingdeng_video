@@ -10,7 +10,7 @@ class Qiniu:
     #上传方法
     def put(self, name, path):
         token = self.qiniu.upload_token(self.bucket_name, name)
-        ret,info = put_file(token, name, path)
+        ret, info = put_file(token, name, path)
 
         if 'key' in ret:
             remote_url = '/'.join([self.base_url, ret['key']])

@@ -5,12 +5,16 @@
     <title>Auth login</title>
 </head>
 <body>
+<div style="text-align: center;">
+<table style="margin: auto；" width='60%'>
 <form action="/dashboard/login/" method="post">
-    ${csrf_token}
-    用户名: <input type="text" name='username' placeholder="username"> <br>
-    密 码: <input type="password" name='password' placeholder="password"> <br>
-    <input type="submit" value="登录"><br>
-    ${error} <br>
+<!--    ${csrf_token}-->
+    username: <input type="text" name='username' placeholder="username"> <br>
+    password: <input type="password" name='password' placeholder="password"> <br>
+    <input type="submit" value="登录"> ${error}<br>
 </form>
+</table>
+</div>
+
 </body>
 </html>

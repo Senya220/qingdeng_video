@@ -1,13 +1,18 @@
-<%inherit file="../base.html" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Base</title>
+</head>
 <%! from django.shortcuts import reverse %>
-<%def name="content()">
-<%
-    from client.models import VideoType, FromType, NationalityType
-%>
+<% def name="content()">
+<%! from client.models import VideoType, FromType, NationalityType %>
+
+<body>
     <h1>视频管理</h1>
     <button id="open-add-video-btn" class="btn btn-info open-btn">创建</button> <span>${error}</span>
     <form id="video-edit-area" action="${reverse('external_video')}"  class="form-horizontal edit-area add-video-area add-url" method="post">
-        ${csrf_token}
+<!--        ${csrf_token}-->
         <div class="from-group">
             <div class="col-sm-10">
                 <input type="text" name="name" class="form-control" placeholder="视频名称">
@@ -22,9 +27,9 @@
             <div class="col-sm-10">
                 <label>视频类型</label>
                 <select name="video_type" class="form-control video-select">
-                    %for video_type in VideoType:
-                        <option value="${video_type.value}">${video_type.label} </option>
-                    %endfor
+                    {% for video_type in VideoType %}:
+                        <option value="${video_type.value}"> ${video_type.label} </option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -49,3 +54,7 @@
             </div>
         </div>
     </form>
+    <input type="submit" value="提交">
+
+</body>
+</html>
